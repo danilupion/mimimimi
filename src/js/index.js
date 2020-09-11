@@ -8,7 +8,7 @@ const gifs = [
   "https://gifcept.com/cxSjcDs.gif",
   "https://gifcept.com/UlfnaN2.gif",
   "https://gifcept.com/2qYUDPO.gif",
-  "https://gifcept.com/8GI71fI.gif"
+  "https://gifcept.com/8GI71fI.gif",
 ];
 
 const random = (min, max) => {
@@ -16,23 +16,38 @@ const random = (min, max) => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.body.style.background = "url(1.jpg) no-repeat";
   const input = document.getElementById("input");
   const canvas = document.getElementById("canvas");
   const defualtText = "Pliisi intir thi tixt yii wint ti trinsfirm";
-  canvas.innerHTML = defualtText;
-  document.body.style.background = `linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url(${gifs[random(0, gifs.length - 1)]})`;
 
-  input.addEventListener("keyup", () => {
+  canvas.innerHTML = defualtText;
+  document.body.style.background = `linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), url(${
+    gifs[random(0, gifs.length - 1)]
+  })`;
+  input.focus();
+
+  const copyClipboard = (text) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text);
+    }
+  };
+
+  const handler = () => {
     const text = input.value.trim();
     if (text === "") {
       canvas.innerHTML = defualtText;
     } else {
-      canvas.innerHTML = text
+      const tixt = text
         .replace(/[aeou]/g, "i")
-        .replace(/AEOU/g, "I")
-        .replace(/áéóú/g, "í")
-        .replace(/ÁÉÓÚ/g, "Í");
+        .replace(/[AEOU]/g, "I")
+        .replace(/[áéóú]/g, "í")
+        .replace(/[ÁÉÓÚ]/g, "Í");
+
+      canvas.innerHTML = tixt;
+      copyClipboard(tixt);
     }
-  });
+  };
+
+  input.addEventListener("keyup", handler);
+  input.addEventListener("paste", handler);
 });
