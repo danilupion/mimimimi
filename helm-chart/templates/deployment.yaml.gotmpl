@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mimimimi-web.fullname" . }}
+  labels:
+    {{- include "mimimimi-web.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "mimimimi-web.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "mimimimi-web.fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+              - name: nginx-conf
+                mountPath: /etc/nginx/conf.d
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: {{ include "mimimimi-web.fullname" . }}
+
+

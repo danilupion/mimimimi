@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mimimimi-web.fullname" . }}
+  labels:
+    {{- include "mimimimi-web.labels" . | nindent 4 }}
+data:
+  spa.conf: |
+    server {
+      listen 8080;
+      root /usr/share/nginx/html;
+
+      include /etc/nginx/mime.types;     # keeps proper Content-Types
+      default_type application/octet-stream;
+
+      # If the requested path isn’t an existing file or dir,
+      # fall back to index.html
+      try_files $uri $uri/ /index.html;
+    }

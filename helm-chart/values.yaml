@@ -1,0 +1,17 @@
+# Server service values
+replicaCount: 1
+image:
+  repository: mimimimi/web
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 8080
+
+# Ingress values
+ingress:
+  ingressClassName: nginx
+  annotations: []
+    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+  host: mimimimi-web.local

@@ -1,0 +1,12 @@
+environments:
+  {{ .Environment.Name }}:
+    values:
+      - environments/{{ .Environment.Name }}/values.yaml
+
+---
+releases:
+  - name: mimimimi-web
+    namespace: mimimimi
+    chart: ./helm-chart
+    values:
+      - {{ toYaml .Values | nindent 8 }}
