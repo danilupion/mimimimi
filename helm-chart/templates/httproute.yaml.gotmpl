@@ -1,0 +1,28 @@
+{{- if .Values.route.enabled }}
+# Gateway API HTTPRoute - successor to the Ingress. Static SPA: all traffic
+# goes to the web service. ingress and route are independent so both may be
+# enabled during a migration window.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "mimimimi-web.fullname" . }}
+  labels:
+    {{- include "mimimimi-web.labels" . | nindent 4 }}
+  {{- with .Values.route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    {{- toYaml (required "route.parentRefs is required when route.enabled" .Values.route.parentRefs) | nindent 4 }}
+  hostnames:
+    {{- toYaml (required "route.hostnames is required when route.enabled" .Values.route.hostnames) | nindent 4 }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ include "mimimimi-web.fullname" . }}
+          port: {{ .Values.service.port }}
+{{- end }}
