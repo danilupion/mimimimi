@@ -8,17 +8,8 @@ service:
   type: ClusterIP
   port: 8080
 
-# Ingress values
-ingress:
-  enabled: true
-  ingressClassName: nginx
-  annotations: []
-    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    # nginx.ingress.kubernetes.io/rewrite-target: /
-  host: mimimimi-web.local
-
-# Gateway API HTTPRoute - successor to the Ingress (same routing, declared
-# in the chart). ingress and route are independent during a migration window.
+# Gateway API HTTPRoute (the chart's only exposure mechanism since 1.0.0;
+# the Ingress template was removed with the ingress-nginx retirement).
 route:
   enabled: false
   # Gateway(s) to attach to, e.g.:

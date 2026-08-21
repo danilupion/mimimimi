@@ -1,7 +1,6 @@
 {{- if .Values.route.enabled }}
-# Gateway API HTTPRoute - successor to the Ingress. Static SPA: all traffic
-# goes to the web service. ingress and route are independent so both may be
-# enabled during a migration window.
+# Gateway API HTTPRoute (the chart's only exposure mechanism). Static SPA: all traffic
+# goes to the web service.
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
